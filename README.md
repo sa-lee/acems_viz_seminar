@@ -13,15 +13,15 @@ interactive plots, reports and dashboards.
 
 
 ## Introducing ggplot2 
-	* big ideas (list of 9)
-	* common plots 
+* big ideas (list of 9)
+* common plots 
 
 ## Core extension packages to ggplot2
 * gganimation
 * GGally
 * ggplot2-extension gallery
 * geom_sf
-* suggrants
+* sugrrants
 
 ## From static to interactive
 * plotly (ggplotly)
