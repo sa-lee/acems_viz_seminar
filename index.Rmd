@@ -674,20 +674,115 @@ class: middle center bg-main1
 
 # Extensions of ggplot2
 
+---
+# Drawing maps
+
+We can use ggplot2 to create chloropleth maps. This requires
+use having some information about geographical regions we
+are going to draw. `ggplot2` has some basic mapping functionality
+with the `map_data()` function.
+
+```{r}
+world_data <- map_data("world")
+head(world_data)
+```
+
+
+---
+# Choloropleth map - setting up data
+
+For each country we can compute the relative difference between
+TB cases between year for each country. 
+
+```{r}
+tb_rel <- tb %>% 
+  group_by(country, year) %>% 
+  summarise(count = sum(count, na.rm = TRUE)) %>% 
+  mutate(
+    diff = lag(count, 1), 
+    reldiff = if_else(diff == 0, 0, (count - diff) / diff)
+  ) %>% 
+  filter(year != first(year)) %>% 
+  ungroup() %>% 
+  mutate(
+    country=recode(country, 
+                   "United States of America"="USA", 
+                   "United Kingdom of Great Britain and Northern Ireland"="UK",
+                   "Russian Federation"="Russia")
+  )
+tb_map <- left_join(
+  world_data, 
+  tb_rel, 
+  by = c("region" = "country")
+)
+```
+
+---
+# Chlorpleth map
+
+We will look at relative difference form 2012 - 2011
+
+```{r}
+library(ggthemes)
+
+map_2012 <- tb_map %>% 
+  filter(year == 2012) 
+map <- map_2012 %>% 
+  ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
+  geom_polygon() +
+  coord_map(xlim = c(-180, 180)) +
+  theme_map() 
+
+map
+```
+
+---
+# Changing colours palettes
+
+```{r}
+library(viridis)
+map + scale_fill_viridis(option = "magma")
+```
+
 
 ---
 
-# gganimate
+# Small multiples
 
+```{r}
+tb_map %>% 
+  filter(year %in% 2010:2012) %>% 
+  ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
+  geom_polygon() +
+  coord_map(xlim = c(-180, 180)) +
+  scale_fill_viridis(option = "magma") +
+  facet_wrap(~ year) +
+  theme_map() 
+```
+
+---
+
+# gganimate - faceting in time
+
+```{r}
+library(gganimate)
+tb_map %>% 
+  filter(year %in% 2008:2012) %>% 
+  ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
+  geom_polygon() +
+  coord_map(xlim = c(-180, 180)) +
+  scale_fill_viridis(option = "magma") +
+  theme_map() +
+  transition_time(year, range = c(2007, 2012))
+ 
+
+```
 ---
 
 # plotly
 
 ---
 
-# simple maps
-
----
 
 
 
