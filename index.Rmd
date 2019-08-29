@@ -751,11 +751,11 @@ map + scale_fill_viridis(option = "magma")
 
 ```{r}
 tb_map %>% 
-  filter(year %in% 2010:2012) %>% 
+  filter(year %in% 2007:2012) %>% 
   ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
   geom_polygon() +
   coord_map(xlim = c(-180, 180)) +
-  scale_fill_viridis(option = "magma") +
+  scale_fill_viridis(limits = c(-1, 4), option = "magma") +
   facet_wrap(~ year) +
   theme_map() 
 ```
@@ -767,19 +767,27 @@ tb_map %>%
 ```{r}
 library(gganimate)
 tb_map %>% 
-  filter(year %in% 2008:2012) %>% 
+  filter(year %in% 2007:2012) %>% 
   ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
   geom_polygon() +
   coord_map(xlim = c(-180, 180)) +
-  scale_fill_viridis(option = "magma") +
+  scale_fill_viridis(limits = c(-1, 4), option = "magma") +
   theme_map() +
-  transition_time(year, range = c(2007, 2012))
- 
-
+  transition_time(year)
 ```
 ---
 
-# plotly
+# plotly - adding interactivity
+
+Simple - just add `ggplotly()`
+
+```{r}
+map <- map + 
+  scale_fill_viridis(option = "magma") 
+
+library(plotly)
+ggplotly(map)
+```
 
 ---
 
