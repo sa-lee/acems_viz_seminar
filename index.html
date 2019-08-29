@@ -74,6 +74,21 @@ class: split-33 with-thick-border border-black
 
 ]]]
 
+--- 
+
+# Who are we? 
+
+
+--- 
+
+# Follow along with us
+
+.largeish[
+https://sa-lee.github.io/acems_viz_seminar/
+
+https://github.com/sa-lee/acems_viz_seminar
+]
+
 ---
 
 # A grammar of graphics
@@ -86,6 +101,8 @@ Here we uncover how the charts you know by name can be created via `ggplot2`, le
 ]
 
 &lt;br&gt;
+
+---
 
 ## Why use the grammar of graphics?
 
@@ -130,22 +147,11 @@ class: split-40 with-thick-border border-white
 ```r
 library(tidyverse)
 tb &lt;- read_rds("data/tb_tidy.rds")
-tb
-```
-
-&lt;br&gt;
-
-.large[We will use a subset of this data corresponding to TB cases in Australia]
-
-
-```r
-tb_au &lt;- filter(
-  tb, country == "Australia"
-  )
+tb_au &lt;- filter(tb, country == "Australia")
 tb_au
 ```
 
-]]
+&lt;br&gt;
 
 --
 
@@ -153,20 +159,20 @@ tb_au
 
 
 ```
-## # A tibble: 47,866 x 6
-##    country     iso3   year count gender age_group
-##    &lt;chr&gt;       &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt;    
-##  1 Afghanistan AFG    1997    10 M      15-24    
-##  2 Afghanistan AFG    1998   129 M      15-24    
-##  3 Afghanistan AFG    1999    55 M      15-24    
-##  4 Afghanistan AFG    2000   228 M      15-24    
-##  5 Afghanistan AFG    2001   379 M      15-24    
-##  6 Afghanistan AFG    2002   476 M      15-24    
-##  7 Afghanistan AFG    2003   511 M      15-24    
-##  8 Afghanistan AFG    2004   537 M      15-24    
-##  9 Afghanistan AFG    2005   606 M      15-24    
-## 10 Afghanistan AFG    2006   837 M      15-24    
-## # … with 47,856 more rows
+## # A tibble: 192 x 6
+##    country   iso3   year count gender age_group
+##    &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt;    
+##  1 Australia AUS    1997     8 M      15-24    
+##  2 Australia AUS    1998    11 M      15-24    
+##  3 Australia AUS    1999    13 M      15-24    
+##  4 Australia AUS    2000    16 M      15-24    
+##  5 Australia AUS    2001    23 M      15-24    
+##  6 Australia AUS    2002    15 M      15-24    
+##  7 Australia AUS    2003    14 M      15-24    
+##  8 Australia AUS    2004    18 M      15-24    
+##  9 Australia AUS    2005    32 M      15-24    
+## 10 Australia AUS    2006    33 M      15-24    
+## # … with 182 more rows
 ```
 ]]
 ---
@@ -179,7 +185,7 @@ We start with a 100% chart, that compares the proportion of TB cases in each age
 
 &lt;br&gt;
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -246,7 +252,7 @@ class: split-33
 ]]
 
 .column[.content.vmiddle[
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/output1-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/output1-1.png" style="display: block; margin: auto;" /&gt;
 ]]
 
 ---
@@ -267,7 +273,7 @@ ggplot(tb_au) +
 ]]
 
 .column[.content.vmiddle[
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/output2-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/output2-1.png" style="display: block; margin: auto;" /&gt;
 ]]
 
 ---
@@ -295,7 +301,7 @@ ggplot(tb_au) +
 ]]
 
 .column[.content.vmiddle[
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/output3-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/output3-1.png" style="display: block; margin: auto;" /&gt;
 ]]
 
 ---
@@ -324,7 +330,7 @@ ggplot(tb_au) +
 ]]
 
 .column[.content.vmiddle[
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/output4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/output4-1.png" style="display: block; margin: auto;" /&gt;
 ]]
 
 ---
@@ -354,7 +360,7 @@ Finally we create a bar chart for each age group present in the TB notifactions,
 ]]
 
 .column[.content.vmiddle[
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/output5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/output5-1.png" style="display: block; margin: auto;" /&gt;
 ]]
 
 ---
@@ -370,14 +376,14 @@ p &lt;- ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
 p
 ```
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Counts vs proportions
 
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ## What we learn from this chart? 
@@ -403,7 +409,7 @@ p &lt;- ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
 p
 ```
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -419,13 +425,13 @@ ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   scale_fill_brewer(palette="Dark2")
 ```
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # What can you learn from this chart? 
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 
 .largeish[
 - Focus on counts by gender, showing predominantly male incidence of TB.
@@ -439,7 +445,7 @@ similar incidence between males and females in younger age groups.
 
 # Beyond bar charts
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 
 .large[This rainbow chart is visually appealling, but it's difficult to interpret. In what way could use `ggplot2` to make the chart easier to interpet?]
 
@@ -477,7 +483,7 @@ ggplot(
 By changing the cartesian coordinates to __polar__, things will be layed out in __circles__, rather than __rectangles__. 
 When using polar coordinates, one axis is mapped to an __angle__, rather than a position.
 ]
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/outputPolar-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/outputPolar-1.png" style="display: block; margin: auto;" /&gt;
 .large[This layout makes it easier to interpret how the chart emphasises the middle age groups as having low incidence accross the years.]
 
 ]]
@@ -520,7 +526,7 @@ ggplot(tb_au,
 
 &lt;br&gt;
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/outputPie-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/outputPie-1.png" style="display: block; margin: auto;" /&gt;
 
 .large[By doing this, you get another pretty chart that's difficult to interpret and unuseful for making comparisons across age groups.]
 
@@ -549,7 +555,7 @@ tb_au %&gt;% filter(year == 2012) %&gt;%
   ggtitle("Arrangement A")
 ```
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/arrA-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/arrA-1.png" style="display: block; margin: auto;" /&gt;
 ]]
 
 .column[.content[
@@ -568,7 +574,7 @@ tb_au %&gt;% filter(year == 2012) %&gt;%
   ggtitle("Arrangement B")
 ```
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/arrB-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/arrB-1.png" style="display: block; margin: auto;" /&gt;
 ]]
 
 
@@ -581,7 +587,7 @@ tb_au %&gt;% filter(year == 2012) %&gt;%
 - Arrangement B makes it easier to directly compare counts by age group, separately for females and males. For females, incidence drops in the middle years. For males, it is pretty consistently high across age groups. 
 ]
 
-&lt;img src="/Users/lee.s/acems_viz_seminar/figures/both-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/both-1.png" style="display: block; margin: auto;" /&gt;
 ---
 
 ### Grammar and Statistics
@@ -595,12 +601,30 @@ What I love about ggplot2...
 
 ...you can make so many different displays of the same data, and each time something new may emerge. 
 
----
-
-### Discussion
-
 - Grammar of graphics makes rearranging easy
 - Its good to look at the data in many different ways [Unwin, Hofmann and Cook](https://journal.r-project.org/archive/2013/RJ-2013-012/RJ-2013-012.pdf)
+
+
+---
+
+class: middle center bg-main1
+
+# Extensions of ggplot2
+
+
+---
+
+# gganimate
+
+---
+
+# plotly
+
+---
+
+# simple maps
+
+---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

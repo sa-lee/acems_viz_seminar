@@ -230,7 +230,7 @@ We start with a 100% chart, that compares the proportion of TB cases in each age
 ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   geom_bar(stat = "identity", position = "fill") +
   facet_grid(~ age_group) +
-  scale_fill_brewer(palette="Dark2")
+  scale_fill_brewer(palette="Dark2") 
 ```
 
 ---
@@ -664,9 +664,31 @@ What I love about ggplot2...
 
 ...you can make so many different displays of the same data, and each time something new may emerge. 
 
----
-
-### Discussion
-
 - Grammar of graphics makes rearranging easy
 - Its good to look at the data in many different ways [Unwin, Hofmann and Cook](https://journal.r-project.org/archive/2013/RJ-2013-012/RJ-2013-012.pdf)
+
+
+---
+
+class: middle center bg-main1
+
+# Extensions of ggplot2
+
+
+---
+
+# gganimate
+
+---
+
+# plotly
+
+---
+
+# simple maps
+
+---
+
+
+
+
