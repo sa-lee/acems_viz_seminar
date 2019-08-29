@@ -69,58 +69,116 @@ class: split-33 with-thick-border border-black
 # and
 # Stuart Lee
 
-
-
-
 ]]]
 
---- 
+---
+layout: false
+class: split-50 with-thick-border border-white
+.column[.content[
+# Who are we?
 
-# Who are we? 
+## Ursula Laa
+.large[
+- Research fellow at Monash University
+- Working in particle physics and data visualisation
+- Interested in visualisation of high-dimensional data
+]
+
+XXX tour animation?
+]]
+
+.column[.content[
+
+# &lt;br&gt;
+
+## Stuart Lee
+
+.large[
+- PhD student at Monash University
+- ...
+- ...
+]
+
+XXX 
+]]
 
 
---- 
+---
 
 # Follow along with us
 
-.largeish[
-https://sa-lee.github.io/acems_viz_seminar/
+&lt;br&gt;
 
-https://github.com/sa-lee/acems_viz_seminar
+.large[The material for todays seminar is available online]
+
+&lt;br&gt;
+
+
+.largeish[
+Get the slides from https://sa-lee.github.io/acems_viz_seminar/
+
+Get the source code from https://github.com/sa-lee/acems_viz_seminar
 ]
+
+&lt;br&gt;
+
+.large[Just open RStudio to go along with the examples!]
 
 ---
 
 # A grammar of graphics
 
-.largeish[
-The grammar of graphics is a framework for constructing statistical graphics in a principled way. 
-The grammar defines an explicit relationship between the variables in your data you have and the graphic or plot you wish to represent. It was first defined by Lee Wilkinson and extended by Hadley Wickham in the R package `ggplot2`. 
 
-Here we uncover how the charts you know by name can be created via `ggplot2`, learn how to construct a `ggplot2` graphic and then build a plot up, layer-by-layer.
+
+.large[
+The grammar of graphics defines a framework to construct statistical graphics in a principled way, by definind an explicit relationship between the variables in the data you have and the graphic or plot you wish to represent. It was first defined by Lee Wilkinson and extended by Hadley Wickham in the R package `ggplot2`. 
+]
+
+--
+
+### `ggplot2` is based on three simple concepts:
+
+.large[
+* __Data__: input data should be formated in a data frame, where each column is a variable, and each row is an observation
+* __Mapping__: declaring a mapping of input data variables onto aestetics
+* __geoms__: the graphical primitives, e.g. geom_line, geom_point
+]
+
+
+--
+
+### Here we uncover how the charts you know by name can be created via `ggplot2`, learn how to construct a `ggplot2` graphic and then build a plot up, layer-by-layer.
+
+
+---
+
+# Why use the grammar of graphics?
+
+&lt;br&gt;
+
+.large[
+The grammar of graphics
+
+- allows us to __define__ the mapping between variables in the data, with elements of the plot
+- allows us to see and understand __how__ plots are similar or different
+- helps us see how variations in the definition create variations in the plot
 ]
 
 &lt;br&gt;
 
----
+### Using named plots, for example a pie chart, bar chart, scatterplot, in some ways is like seeing animals in the zoo.
 
-## Why use the grammar of graphics?
 
-.largeish[
-The grammar of graphics allows you to __define__ the mapping between variables in the data, with elements of the plot. It allows us to see and understand __how__ plots are similar or different. 
-
-The grammar also helps you see how variations in the definition create variations in the plot. Using named plots, for example a pie chart, bar chart, scatterplot, in some ways is like seeing animals in the zoo. 
-]
 ---
 
 # Example data
 
 ### World Health Organisation (WHO) tuberculosis case notifications data 
 
+&lt;br&gt;
+
 .large[To showcase `ggplot2` we will build graphics using a data set provided by the [World Health Organisation (WHO)](https://www.who.int/). This is current tuberculosis (TB) case notifications aggregated by __country__, __gender__ and __age__ group. We have tidied up this data for you and saved it in the R data storage format.]
 
-XXX how to share data? update download?
-Before making your way through this step, we strongly recommend that you [download the data set](https://github.com/datascienceprogram/ids_course_data/blob/master/data/tb_tidy.rds) and then place it in your project folder on your computer.
 
 .largeish[
 The data consists of six columns:
@@ -134,29 +192,20 @@ The data consists of six columns:
 * __count:__ the total number of TB cases for a given country, year, gender and age group.
 ]
 ---
-layout: false
-class: split-40 with-thick-border border-white
 
-.column[.content[
+
 
 # Load the data in RStudio on your computer
 
-.large[On your computer, open RStudio and then load the TB data in with R using the tidyverse:]
+.largeish[On your computer, open RStudio and then load the TB data in with R using the tidyverse:]
 
 
 ```r
 library(tidyverse)
 tb &lt;- read_rds("data/tb_tidy.rds")
-tb_au &lt;- filter(tb, country == "Australia")
+tb_au &lt;- filter(tb, country == "Australia", !is.na(age_group))
 tb_au
 ```
-
-&lt;br&gt;
-
---
-
-.column[.content.vmiddle[
-
 
 ```
 ## # A tibble: 192 x 6
@@ -174,7 +223,9 @@ tb_au
 ## 10 Australia AUS    2006    33 M      15-24    
 ## # … with 182 more rows
 ```
-]]
+
+
+
 ---
 
 # A first look
@@ -185,7 +236,7 @@ We start with a 100% chart, that compares the proportion of TB cases in each age
 
 &lt;br&gt;
 
-&lt;img src="./figures/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -215,30 +266,6 @@ class: middle center bg-main1
 
 ---
 
-# Building your own ggplot
-
-.largeish[We start building a ggplot2 graphic with the function `ggplot()`, passing a *data set* and an *aesthetic mapping* as arguments to the function. 
-The *aesthetic mapping* (or *variable mapping*) is constructed with the function `aes()`, telling `ggplot()` which variable in our data should correspond to a particular graphical element to be drawn.]
-
-### Example
-
-
-```r
-p &lt;- ggplot(tb_au, aes(x = year, y = count, fill = gender))
-```
-
-.large[The first argument provided is the name of the data, `tb_au`. And the variable mapping consists of three elements, the variable:]
-
-.largeish[
-- __year__ will be mapped to the x-axis, 
-- __count__ will be mapped to the y-axis  
-- __gender__ will be mapped to the fill element (it will be the colour)
-]
-
-.largeish[This generates a blank plot, we still need to tell ggplot what geometric shape to draw!]
-
----
-
 layout: false
 class: split-33
 
@@ -246,9 +273,15 @@ class: split-33
 ## Stepwise building of a `ggplot2`
 
 
+We start by passing our *data set* to the ggplot function
+
+
+
+
 ```r
 *ggplot(tb_au)
 ```
+
 ]]
 
 .column[.content.vmiddle[
@@ -264,12 +297,17 @@ class: split-33
 ## Stepwise building of a `ggplot2`
 
 
+We next call `aes()` to define the *aesthetic mapping* (or *variable mapping*)
+
+
+
 ```r
 ggplot(tb_au) +
 * aes(x = year,
 *     y = count,
 *     fill = gender)
 ```
+
 ]]
 
 .column[.content.vmiddle[
@@ -284,6 +322,8 @@ class: split-33
 .column[.content[
 ## Stepwise building of a `ggplot2`
 
+Now we specify the geom we want to draw 
+
 
 ```r
 ggplot(tb_au) +
@@ -296,7 +336,7 @@ ggplot(tb_au) +
 
 .largeish[
 - `stat = "identity"` says no need to compute the count (it is already counted in the data)
-- `position = "fill"` specifies how the bars are placed, it sets the heights of the bars to be all at 100%, and emphasizes the proportion of males and females
+- `position = "fill"` sets the heights of the bars to be all at 100%, this emphasizes the proportion of males and females
 ]
 ]]
 
@@ -312,6 +352,8 @@ class: split-33
 .column[.content[
 ## Stepwise building of a `ggplot2`
 
+We can easily change things like the color palette
+
 
 ```r
 ggplot(tb_au) +
@@ -325,7 +367,7 @@ ggplot(tb_au) +
 ```
 
 .largeish[
-`ggplot` automatically draws a legend, but you may want might want to change the colour of the bars to accommodate colour blindness. This can be done with a `scale` element, and here we use a palette from [colorbrewer.org](colorbrewer.org).
+Here we use a palette from [colorbrewer.org](colorbrewer.org) that accommodates colour blindness.
 ]
 ]]
 
@@ -341,6 +383,8 @@ class: split-33
 .column[.content[
 ## Stepwise building of a `ggplot2`
 
+Finally we create a bar chart for each age group by facetting
+
 
 ```r
 ggplot(tb_au) +
@@ -355,7 +399,7 @@ ggplot(tb_au) +
 ```
 
 .largeish[
-Finally we create a bar chart for each age group present in the TB notifactions, which you can do by adding a `facet` element. A `facet` creates subplots for each category (or combination of categories) laid out in a grid. The argument is specified as a *formula*, and is of the form left hand side ~ right hand side
+A `facet` creates subplots for each category (or combination of categories) laid out in a grid. The argument is specified as a *formula*, and is of the form left hand side ~ right hand side.
 ]
 ]]
 
@@ -365,7 +409,9 @@ Finally we create a bar chart for each age group present in the TB notifactions,
 
 ---
 
-To summarise, you have created your first `ggplot` one layer at a time. Once you become more confident you will be able to start building everything up at once. Your completed chart should resemble the following:
+# Final plot
+
+We created a `ggplot` one layer at a time. Once you become more confident you will be able to start building everything up at once.
 
 
 ```r
@@ -376,29 +422,16 @@ p &lt;- ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
 p
 ```
 
-&lt;img src="./figures/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Counts vs proportions
+# Changing things up
 
-
-&lt;img src="./figures/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
-
-
-## What we learn from this chart? 
-
-.largeish[
-- Focus on **counts**, it shows that counts are different across __ages__, and __years__: counts tend to be lower in middle age (45-64). 
-- Shows that in the year 1999, there was a bit of a TB outbreak in most age groups, with numbers doubling or tripling compared to other years. The TB Incidence has been increasing among younger age groups in recent years.
+.large[
+We can easily change how the plot is defined and compare different ways of showing the same data.
+You can make a bar chart using `ggplot2` by changing the position argument in `geom_bar()` to `stack`: 
 ]
-
----
-
-## Give it a go!
-
-You can make this bar chart using `ggplot2` by changing the position argument
-in `geom_bar()` to `stack`, with the following code chunk: 
 
 
 ```r
@@ -409,7 +442,24 @@ p &lt;- ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
 p
 ```
 
-&lt;img src="./figures/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Changing things up
+
+.large[
+We can easily change how the plot is defined and compare different ways of showing the same data.
+You can make a bar chart using `ggplot2` by changing the position argument in `geom_bar()` to `stack`: 
+]
+
+## What we learn from this chart? 
+
+.largeish[
+- Focus on **counts**, it shows that counts are different across __ages__, and __years__: counts tend to be lower in middle age (45-64). 
+- Shows that in the year 1999, there was a bit of a TB outbreak in most age groups, with numbers doubling or tripling compared to other years. The TB Incidence has been increasing among younger age groups in recent years.
+]
+
 
 ---
 
@@ -425,13 +475,13 @@ ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   scale_fill_brewer(palette="Dark2")
 ```
 
-&lt;img src="./figures/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # What can you learn from this chart? 
 
-&lt;img src="./figures/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 
 .largeish[
 - Focus on counts by gender, showing predominantly male incidence of TB.
@@ -445,7 +495,7 @@ similar incidence between males and females in younger age groups.
 
 # Beyond bar charts
 
-&lt;img src="./figures/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 
 .large[This rainbow chart is visually appealling, but it's difficult to interpret. In what way could use `ggplot2` to make the chart easier to interpet?]
 
