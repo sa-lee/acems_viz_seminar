@@ -63,9 +63,8 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.align = "center",
                       fig.height = 6,
                       fig.width = 4,
-                      root.dir = here::here(),
-                      cache.path = here::here("cache/"),
-                      fig.path = here::here("figures/"),
+                      cache.path = "./cache/",
+                      fig.path = "./figures/",
                       dev.args = list(bg = "transparent")
                       )
 library(knitr)
@@ -115,10 +114,10 @@ theme_set(
 .column.bg-main1[.content.vmiddle[.center[
 
 
-# Visualising in R
+# Data Visualisation with R
 
 
-### ggplot2 !
+### ggplot2 and friends!
 <br>
 <br>
 
@@ -127,11 +126,24 @@ theme_set(
 # Stuart Lee
 
 
-### School of Physics and Astronomy
-### &
-### Department of Econometrics and Business Statistics
+
 
 ]]]
+
+--- 
+
+# Who are we? 
+
+
+--- 
+
+# Follow along with us
+
+.largeish[
+https://sa-lee.github.io/acems_viz_seminar/
+
+https://github.com/sa-lee/acems_viz_seminar
+]
 
 ---
 
@@ -145,6 +157,8 @@ Here we uncover how the charts you know by name can be created via `ggplot2`, le
 ]
 
 <br>
+
+---
 
 ## Why use the grammar of graphics?
 
@@ -188,28 +202,18 @@ class: split-40 with-thick-border border-white
 ```{r tb-01, eval = FALSE, echo = TRUE}
 library(tidyverse)
 tb <- read_rds("data/tb_tidy.rds")
-tb
-```
-
-<br>
-
-.large[We will use a subset of this data corresponding to TB cases in Australia]
-
-```{r tb-02, eval = FALSE}
-tb_au <- filter(
-  tb, country == "Australia"
-  )
+tb_au <- filter(tb, country == "Australia")
 tb_au
 ```
 
-]]
+<br>
 
 --
 
 .column[.content.vmiddle[
 
 ```{r, echo = FALSE}
-tb
+tb_au
 ```
 ]]
 ---
@@ -226,7 +230,7 @@ We start with a 100% chart, that compares the proportion of TB cases in each age
 ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   geom_bar(stat = "identity", position = "fill") +
   facet_grid(~ age_group) +
-  scale_fill_brewer(palette="Dark2")
+  scale_fill_brewer(palette="Dark2") 
 ```
 
 ---
@@ -660,9 +664,31 @@ What I love about ggplot2...
 
 ...you can make so many different displays of the same data, and each time something new may emerge. 
 
----
-
-### Discussion
-
 - Grammar of graphics makes rearranging easy
 - Its good to look at the data in many different ways [Unwin, Hofmann and Cook](https://journal.r-project.org/archive/2013/RJ-2013-012/RJ-2013-012.pdf)
+
+
+---
+
+class: middle center bg-main1
+
+# Extensions of ggplot2
+
+
+---
+
+# gganimate
+
+---
+
+# plotly
+
+---
+
+# simple maps
+
+---
+
+
+
+
