@@ -340,7 +340,7 @@ class: split-33
 ## Stepwise building of a `ggplot2`
 
 
-We next call `aes()` to define the *aesthetic mapping* (or *variable mapping*)
+We next define the *aesthetic mapping* (or *variable mapping*)
 
 
 ```{r plot2, eval=FALSE, echo=TRUE}
@@ -458,45 +458,53 @@ A `facet` creates subplots for each category (or combination of categories) laid
 
 We created a `ggplot` one layer at a time. Once you become more confident you will be able to start building everything up at once.
 
-```{r echo=TRUE, fig.width=12, fig.height=4.9}
-p <- ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
+```{r echo=TRUE, fig.width=12, fig.height=4.5}
+ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   geom_bar(stat = "identity", position = "fill") +
   facet_grid(~ age_group) +
   scale_fill_brewer(palette="Dark2")
-p
 ```
 
 ---
 
 # Changing things up
 
-.large[
+.largeish[
 We can easily change how the plot is defined and compare different ways of showing the same data.
 You can make a bar chart using `ggplot2` by changing the position argument in `geom_bar()` to `stack`: 
 ]
 
-```{r echo=TRUE, fig.width=12, fig.height=5}
-p <- ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
+```{r echo=TRUE, fig.width=12, fig.height=4.5}
+ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   geom_bar(stat = "identity", position = "stack") +
   facet_grid(~ age_group) +
   scale_fill_brewer(palette="Dark2")
-p
 ```
 
 ---
-
 # Changing things up
 
-.large[
+.largeish[
 We can easily change how the plot is defined and compare different ways of showing the same data.
 You can make a bar chart using `ggplot2` by changing the position argument in `geom_bar()` to `stack`: 
 ]
+
+```{r echo=TRUE, eval=FALSE}
+ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  facet_grid(~ age_group) +
+  scale_fill_brewer(palette="Dark2")
+```
 
 ## What we learn from this chart? 
 
 .largeish[
-- Focus on **counts**, it shows that counts are different across __ages__, and __years__: counts tend to be lower in middle age (45-64). 
-- Shows that in the year 1999, there was a bit of a TB outbreak in most age groups, with numbers doubling or tripling compared to other years. The TB Incidence has been increasing among younger age groups in recent years.
+
+Plotting the data in a different way changes what we learn from it
+
+- Focus in now on **counts**, showing that counts are different across __ages__, and __years__: counts tend to be lower in middle age (45-64). 
+- Shows that in the year 1999, there was a bit of a TB outbreak in most age groups, with numbers doubling or tripling compared to other years.
+- The TB Incidence has been increasing among younger age groups in recent years.
 ]
 
 
@@ -504,9 +512,9 @@ You can make a bar chart using `ggplot2` by changing the position argument in `g
 
 # From 'stacked' to 'side-by-side'
 
-.large[Let's change the position argument in `geom_bar()` to `dodge` to show the counts in each age category but with respect to __gender__]
+.largeish[Let's change the position argument in `geom_bar()` to `dodge` to show the counts in each age category but with respect to __gender__]
 
-```{r echo=TRUE, fig.width=12, fig.height=5}
+```{r echo=TRUE, fig.width=12, fig.height=4.5}
 ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   geom_bar(stat = "identity", position="dodge") +
   facet_grid(~ age_group) +
@@ -515,14 +523,18 @@ ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
 
 ---
 
-# What can you learn from this chart? 
+# From 'stacked' to 'side-by-side'
 
-```{r echo=FALSE, fig.width=12, fig.height=5}
+.largeish[Let's change the position argument in `geom_bar()` to `dodge` to show the counts in each age category but with respect to __gender__]
+
+```{r echo=TRUE, eval=FALSE}
 ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
   geom_bar(stat = "identity", position="dodge") +
   facet_grid(~ age_group) +
   scale_fill_brewer(palette="Dark2")
 ```
+
+# What can you learn from this chart? 
 
 .largeish[
 - Focus on counts by gender, showing predominantly male incidence of TB.
@@ -533,111 +545,140 @@ similar incidence between males and females in younger age groups.
 .largeish[What's changed from your previous charts? The colours, aesthetics and facets have remained the same, it's just the __position__ of the bars that have been altered ]
 
 ---
-
-# Beyond bar charts
-
-```{r echo=FALSE, fig.width=12, fig.height=6}
-ggplot(tb_au, aes(x = 1, y = count, fill = factor(year))) +
-  geom_bar(stat = "identity", position="fill") +
-  facet_grid(gender ~ age_group) 
-```
-
-.large[This rainbow chart is visually appealling, but it's difficult to interpret. In what way could use `ggplot2` to make the chart easier to interpet?]
-
----
-layout: false
-class: split-33
-
-.column[.content[
 # Changing coordinates
 
+.largeish[
+By changing to __polar__ coordinates, things will be layed out in __circles__, rather than __rectangles__, one axis is mapped to an __angle__.
+]
 
-```{r plotPolar, eval=FALSE, echo=TRUE}
-ggplot(
-  tb_au,
-  aes(x = year,
-      y = count,
-      fill = gender)
-  ) +
-  geom_bar(
-    stat = "identity"
-    ) +
-  facet_grid(
-    gender ~ age_group
-    ) +
-  scale_fill_brewer(
-    palette="Dark2"
-    ) + 
+```{r plotPolar, eval=TRUE, echo=TRUE, fig.width=12, fig.height=4.5}
+ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
+  geom_bar(stat = "identity") +
+  facet_grid(gender ~ age_group) +
+  scale_fill_brewer(palette="Dark2") + 
   coord_polar() 
 ```
-]]
 
-.column[.content[
+---
+
+# Changing coordinates
+
 .largeish[
-By changing the cartesian coordinates to __polar__, things will be layed out in __circles__, rather than __rectangles__. 
-When using polar coordinates, one axis is mapped to an __angle__, rather than a position.
+By changing to __polar__ coordinates, things will be layed out in __circles__, rather than __rectangles__, one axis is mapped to an __angle__.
 ]
-```{r outputPolar, ref.label="plotPolar", echo=FALSE, cache=TRUE, fig.height = 6, fig.width=10}
+
+```{r plotPolarC, eval=FALSE, echo=TRUE}
+ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
+  geom_bar(stat = "identity") +
+  facet_grid(gender ~ age_group) +
+  scale_fill_brewer(palette="Dark2") + 
+  coord_polar() 
 ```
+
+
+# What can you learn from this chart? 
+
 .large[This layout makes it easier to interpret how the chart emphasises the middle age groups as having low incidence accross the years.]
 
-]]
 
 
 
 
 ---
-layout: false
-class: split-33
 
-.column[.content[
-# Transform from rainbox to pie
+# Making a pie chart
 
-You can continue to use polar coordinates to modify your rainbow chart and transform it to a pie chart. 
+.largeish[You can continue to use polar coordinates to make a pie chart.]
 
 
-```{r plotPie, eval=FALSE, echo=TRUE}
-ggplot(tb_au,
-       aes(
-         x = 1,
-         y = count,
-         fill = factor(year)
-         )
-       ) +
-  geom_bar(
-    stat = "identity", position="fill"
-    ) +
-  facet_grid(
-    gender ~ age_group
-    ) +
-  coord_polar(
-    theta = "y"
-    )
+```{r plotPie, eval=TRUE, echo=TRUE, fig.width=12, fig.height=4.5}
+ggplot(tb_au, aes(x = 1, y = count, fill = factor(year))) +
+  geom_bar(stat = "identity", position="fill") +
+  facet_grid(gender ~ age_group) +
+  coord_polar(theta = "y")
 ```
-]]
 
-.column[.content[
+---
+
+# Making a pie chart
+
+.largeish[You can continue to use polar coordinates to make a pie chart.]
+
+
+```{r plotPie2, eval=FALSE, echo=TRUE}
+ggplot(tb_au, aes(x = 1, y = count, fill = factor(year))) +
+  geom_bar(stat = "identity", position="fill") +
+  facet_grid(gender ~ age_group) +
+  coord_polar(theta = "y")
+```
+
+# What can you learn from this chart? 
+
+.large[The pie chart is pretty but difficult to interpret and not usefull for making comparisons across age.]
+
+---
+
+# Re-arrangement and proximity
+
+.large[
+Compare the two displays below - how are they different and what information does each of them emphasise?
+]
 
 <br>
 
-```{r outputPie, ref.label="plotPie", echo=FALSE, cache=TRUE, fig.height = 6, fig.width=10}
+```{r both, echo=FALSE, fig.height=5, fig.width=14}
+a <- tb_au %>% filter(year == 2012) %>%
+  ggplot() +
+  aes(x=gender, y=count, fill=gender) +
+  geom_bar(stat="identity", position="dodge") + 
+  facet_wrap(~age_group, ncol=6) +
+  scale_fill_brewer("", palette="Dark2") +
+  ggtitle("Arrangement A")
+b <- tb_au %>% filter(year == 2012) %>%
+  ggplot() +
+  aes(x=age_group, y=count, fill=age_group) +
+  geom_bar(stat="identity", position="dodge") + 
+  facet_wrap(~gender, ncol=6) +
+  scale_fill_brewer("", palette="Dark2") +
+  ggtitle("Arrangement B")
+library(gridExtra)
+grid.arrange(a, b, nrow=1)
 ```
-
-.large[By doing this, you get another pretty chart that's difficult to interpret and unuseful for making comparisons across age groups.]
-
-]]
-
-
 ---
 
+
+# Re-arrangement and proximity
+
+.large[
+Compare the two displays below - how are they different and what information does each of them emphasise?
+]
+
+<br>
+
+# What can you learn from each chart? 
+
+.largeish[
+Arrangement A:
+
+- easy to directly compare male and female counts, separately for each age group
+- male counts are higher than female counts
+- there is a big difference between counts in the 45-54 age group, and over 65 counts are almost the same
+
+
+Arrangement B:
+
+- easy to directly compare counts by age group, separately for females and males
+- for females, incidence drops in the middle years
+- for males, it is pretty consistently high across age groups
+]
+
+---
 layout: false
 class: split-50 with-thick-border border-white
 
-
-
 .column[.content[
 
-## Re-arrangement and proximity
+## Code for re-arrangement
 
 ```{r arrA, echo=TRUE, fig.height=5, fig.width=7}
 tb_au %>% filter(year == 2012) %>%
@@ -667,33 +708,7 @@ tb_au %>% filter(year == 2012) %>%
 ]]
 
 
----
 
-# Re-arrangement and proximity
-
-.large[
-- Arrangement A makes it easier to directly compare male and female counts, separately for each age group. Generally, male counts are higher than female counts. There is a big difference between counts in the 45-54 age group, and over 65 counts are almost the same.
-- Arrangement B makes it easier to directly compare counts by age group, separately for females and males. For females, incidence drops in the middle years. For males, it is pretty consistently high across age groups. 
-]
-
-```{r both, echo=FALSE, fig.height=5, fig.width=14}
-a <- tb_au %>% filter(year == 2012) %>%
-  ggplot() +
-  aes(x=gender, y=count, fill=gender) +
-  geom_bar(stat="identity", position="dodge") + 
-  facet_wrap(~age_group, ncol=6) +
-  scale_fill_brewer("", palette="Dark2") +
-  ggtitle("Arrangement A")
-b <- tb_au %>% filter(year == 2012) %>%
-  ggplot() +
-  aes(x=age_group, y=count, fill=age_group) +
-  geom_bar(stat="identity", position="dodge") + 
-  facet_wrap(~gender, ncol=6) +
-  scale_fill_brewer("", palette="Dark2") +
-  ggtitle("Arrangement B")
-library(gridExtra)
-grid.arrange(a, b, nrow=1)
-```
 ---
 
 ### Grammar and Statistics
