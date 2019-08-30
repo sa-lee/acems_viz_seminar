@@ -10,3 +10,11 @@ collaborators and colleagues. In this seminar, we will introduce contemporary
 R packages for visualisation that we have found useful in our work. We will
 provide examples of using ggplot2, and its extensions as well as building
 interactive plots, reports and dashboards.
+
+## Set up
+
+Install these packages to run the Rmd/R script
+
+```{r}
+install.packages(c("tidyverse", "viridis", "maps", "ggthemes", "plotly"))
+```
