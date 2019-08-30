@@ -714,7 +714,7 @@ tb_au %>% filter(year == 2012) %>%
 ### Grammar and Statistics
 
 
-What I love about ggplot2...
+What we love about ggplot2...
 
 <img src="https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif" style="width: 40%" />
 
@@ -735,12 +735,10 @@ class: middle center bg-main1
 ---
 # Drawing maps
 
-We can use ggplot2 to create chloropleth maps. This requires
-use having some information about geographical regions we
-are going to draw. `ggplot2` has some basic mapping functionality
-with the `map_data()` function.
+We can use ggplot2 to create chloropleth maps.
 
 ```{r}
+# we need some geographical coordinates
 world_data <- map_data("world")
 head(world_data)
 ```
@@ -752,7 +750,7 @@ head(world_data)
 For each country we can compute the relative difference between
 TB cases between year for each country. 
 
-```{r}
+```{r reldata, eval = FALSE, echo = TRUE}
 tb_rel <- tb %>% 
   group_by(country, year) %>% 
   summarise(count = sum(count, na.rm = TRUE)) %>% 
@@ -773,16 +771,16 @@ tb_map <- left_join(
   tb_rel, 
   by = c("region" = "country")
 )
+head(tb_map)
 ```
 
 ---
-# Chlorpleth map
+# Chloropleth map
 
-We will look at relative difference form 2012 - 2011
+Let's look at relative difference from 2012 - 2011
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 library(ggthemes)
-
 map_2012 <- tb_map %>% 
   filter(year == 2012) 
 map <- map_2012 %>% 
@@ -790,17 +788,99 @@ map <- map_2012 %>%
   geom_polygon() +
   coord_map(xlim = c(-180, 180)) +
   theme_map() 
-
 map
 ```
 
 ---
-# Changing colours palettes
 
-```{r}
-library(viridis)
-map + scale_fill_viridis(option = "magma")
+# Chloropleth map
+
+```{r chloro-out, ref.label="chlormap", echo=FALSE, cache=TRUE, fig.width=12, fig.height=6}
 ```
+
+
+---
+
+# Changing colour palettes
+
+```{r viridis, echo = TRUE, eval = FALSE}
+library(viridis)
+map <- map + scale_fill_viridis(option = "magma")
+map
+```
+
+---
+
+# Changing colour palettes
+
+```{r viridis-out, ref.label="viridis", echo=FALSE, cache=TRUE, fig.height=6, fig.width=6}
+```
+
+
+---
+
+# Facetting
+
+```{r facetMaps, echo = TRUE, eval =  FALSE}
+library(ggthemes)
+tb_map %>% 
+  filter(year %in% 2007:2012) %>% 
+  ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
+  geom_polygon() +
+  coord_map(xlim = c(-180, 180)) +
+  scale_fill_viridis(limits = c(-1, 4), option = "magma") +
+  facet_wrap(~ year) +
+  theme_map() 
+```
+
+---
+# Facetting
+
+```{r facetMaps-out, ref.label="facetMaps", echo = FALSE, cache = TRUE, fig.height=6, fig.width = 12}
+```
+
+---
+
+# Animation or faceting in time
+
+```{r animateMaps, echo = TRUE, eval = FALSE}
+library(gganimate)
+tb_map %>% 
+  filter(year %in% 2007:2012) %>% 
+  ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
+  geom_polygon() +
+  coord_map(xlim = c(-180, 180)) +
+  scale_fill_viridis(limits = c(-1, 4), option = "magma") +
+  theme_map() +
+  transition_time(year)
+```
+
+---
+# Animation or facetting in time
+
+```{r animateMaps-out, ref.label="animateMaps", fig.width = 12, fig.height = 6, echo = FALSE, cache = TRUE}
+```
+
+---
+
+# Adding user interactivity
+
+.largeish[Just add `ggplotly()`!]
+
+```{r, plotly, echo = TRUE, fig.height=6, fig.width=12}
+library(plotly)
+ggplotly(map)
+```
+
+---
+
+# and many more!
+
+.largeish[https://www.ggplot2-exts.org/]
+
+.largeish[https://socviz.co/]
+
+.largeish[https://r4ds.had.co.nz/]
 
 
 ---
@@ -813,49 +893,7 @@ class: bg-main1 center
 
 .largeish[These slides are made with R markdown using xaringan and the Kunoichi theme.]
 
-# Small multiples
 
-```{r}
-tb_map %>% 
-  filter(year %in% 2007:2012) %>% 
-  ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
-  geom_polygon() +
-  coord_map(xlim = c(-180, 180)) +
-  scale_fill_viridis(limits = c(-1, 4), option = "magma") +
-  facet_wrap(~ year) +
-  theme_map() 
-```
-
----
-
-# gganimate - faceting in time
-
-```{r}
-library(gganimate)
-tb_map %>% 
-  filter(year %in% 2007:2012) %>% 
-  ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
-  geom_polygon() +
-  coord_map(xlim = c(-180, 180)) +
-  scale_fill_viridis(limits = c(-1, 4), option = "magma") +
-  theme_map() +
-  transition_time(year)
-```
----
-
-# plotly - adding interactivity
-
-Simple - just add `ggplotly()`
-
-```{r}
-map <- map + 
-  scale_fill_viridis(option = "magma") 
-
-library(plotly)
-ggplotly(map)
-```
-
----
 
 
 
