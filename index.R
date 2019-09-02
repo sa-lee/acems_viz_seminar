@@ -109,6 +109,19 @@ theme_set(
 )
 
 
+## ---- out.width='50%', out.height='50%', echo=FALSE----------------------
+knitr::include_graphics("./flyingBirds.gif")
+
+
+## ---- out.width='50%', out.height='50%', echo=FALSE----------------------
+knitr::include_graphics("./plyranges.png")
+
+
+## ---- eval = FALSE-------------------------------------------------------
+## pkgs <- c("tidyverse", "viridis", "maps", "mapproj", "ggthemes", "plotly")
+## install.packages(pkgs)
+
+
 ## ----tb-01, eval = TRUE, echo = TRUE-------------------------------------
 library(tidyverse)
 tb <- read_rds("data/tb_tidy.rds")
@@ -296,7 +309,6 @@ tb_au %>% filter(year == 2012) %>%
 
 
 ## ------------------------------------------------------------------------
-# we need some geographical coordinates
 world_data <- map_data("world")
 head(world_data)
 
@@ -317,6 +329,11 @@ tb_rel <- tb %>%
                    "United Kingdom of Great Britain and Northern Ireland"="UK",
                    "Russian Federation"="Russia")
   )
+
+head(tb_rel)
+
+
+## ---- echo = FALSE, eval = TRUE------------------------------------------
 tb_map <- left_join(
   world_data, 
   tb_rel, 
@@ -381,5 +398,5 @@ head(tb_map)
 
 ## ----plotly, echo = TRUE, fig.height=6, fig.width=12---------------------
 library(plotly)
-ggplotly(map)
+ggplotly(map, tooltip = c("fill"))
 
