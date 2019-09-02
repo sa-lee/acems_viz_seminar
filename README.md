@@ -16,5 +16,5 @@ interactive plots, reports and dashboards.
 Install these packages to run the Rmd/R script
 
 ```{r}
-install.packages(c("tidyverse", "viridis", "maps", "ggthemes", "plotly"))
+install.packages(c("tidyverse", "viridis", "maps", "mapproj", "ggthemes", "plotly"))
 ```
