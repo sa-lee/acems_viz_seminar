@@ -68,12 +68,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       dev.args = list(bg = "transparent")
                       )
 library(knitr)
-# preload data
 library(tidyverse)
-tb <- read_rds(here::here("data", "tb_tidy.rds"))
-tb_au <- filter(tb, country == "Australia", !is.na(age_group))
-
-
 
 hook_output <- knit_hooks$get("output")
 knit_hooks$set(output = function(x, options) {
@@ -170,7 +165,7 @@ knitr::include_graphics("./plyranges.png")
 
 <br>
 
-.large[The material for todays seminar is available online]
+.large[The material for today's seminar is available online]
 
 <br>
 
@@ -197,7 +192,7 @@ install.packages(pkgs)
 
 
 .large[
-The grammar of graphics defines a framework to construct statistical graphics in a principled way, by definind an explicit relationship between the variables in the data you have and the graphic or plot you wish to represent. It was first defined by Lee Wilkinson and extended by Hadley Wickham in the R package `ggplot2`. 
+The grammar of graphics defines a framework to construct statistical graphics in a principled way, by defining an explicit relationship between the variables in the data you have and the graphic or plot you wish to represent. It was first defined by Lee Wilkinson and extended by Hadley Wickham in the R package `ggplot2`. 
 ]
 
 --
@@ -205,8 +200,8 @@ The grammar of graphics defines a framework to construct statistical graphics in
 ### `ggplot2` is based on three simple concepts:
 
 .large[
-* __Data__: input data should be formated in a data frame, where each column is a variable, and each row is an observation
-* __Mapping__: declaring a mapping of input data variables onto aestetics
+* __Data__: input data should be formatted in a data frame, where each column is a variable, and each row is an observation
+* __Mapping__: declaring a mapping of input data variables onto aesthetics
 * __geoms__: the graphical primitives, e.g. geom_line, geom_point
 ]
 
@@ -249,9 +244,9 @@ The grammar of graphics
 .largeish[
 The data consists of six columns:
 
-* __country:__ the country where the TB case(s) occured
+* __country:__ the country where the TB case(s) occurred
 * __iso3:__ a three letter standardised country code
-* __year:__ the year when the TB case(s) occured
+* __year:__ the year when the TB case(s) occurred
 * __gender:__ whether the TB case(s) belonged to males or females.
 * __age_group:__ whether the TB case(s) belonged to someone aged between 15 to 24, 25 to 34,
 35 to 44, 45 to 54, 55 to 64 or 65 and above
@@ -405,7 +400,7 @@ class: split-33
 .column[.content[
 ## Stepwise building of a `ggplot2`
 
-We can easily change things like the color palette
+We can easily change things like the colour palette
 
 ```{r plot4, eval=FALSE, echo=TRUE}
 ggplot(tb_au) +
@@ -437,7 +432,7 @@ class: split-33
 .column[.content[
 ## Stepwise building of a `ggplot2`
 
-Finally we create a bar chart for each age group by facetting
+Finally we create a bar chart for each age group by faceting
 
 ```{r plot5, eval=FALSE, echo=TRUE}
 ggplot(tb_au) +
@@ -453,7 +448,7 @@ ggplot(tb_au) +
 ```
 
 .largeish[
-A `facet` creates subplots for each category (or combination of categories) laid out in a grid. The argument is specified as a *formula*, and is of the form left hand side ~ right hand side.
+A `facet` creates sub-plots for each category (or combination of categories) laid out in a grid. The argument is specified as a *formula*, and is of the form left hand side ~ right hand side.
 ]
 ]]
 
@@ -558,7 +553,7 @@ similar incidence between males and females in younger age groups.
 # Changing coordinates
 
 .largeish[
-By changing to __polar__ coordinates, things will be layed out in __circles__, rather than __rectangles__, one axis is mapped to an __angle__.
+By changing to __polar__ coordinates, things will be laid out in __circles__, rather than __rectangles__, one axis is mapped to an __angle__.
 ]
 
 ```{r plotPolar, eval=TRUE, echo=TRUE, fig.width=12, fig.height=4.5}
@@ -574,7 +569,7 @@ ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
 # Changing coordinates
 
 .largeish[
-By changing to __polar__ coordinates, things will be layed out in __circles__, rather than __rectangles__, one axis is mapped to an __angle__.
+By changing to __polar__ coordinates, things will be laid out in __circles__, rather than __rectangles__, one axis is mapped to an __angle__.
 ]
 
 ```{r plotPolarC, eval=FALSE, echo=TRUE}
@@ -588,7 +583,7 @@ ggplot(tb_au, aes(x = year, y = count, fill = gender)) +
 
 # What can you learn from this chart? 
 
-.large[This layout makes it easier to interpret how the chart emphasises the middle age groups as having low incidence accross the years.]
+.large[This layout makes it easier to interpret how the chart emphasises the middle age groups as having low incidence across the years.]
 
 
 
@@ -624,7 +619,7 @@ ggplot(tb_au, aes(x = 1, y = count, fill = factor(year))) +
 
 # What can you learn from this chart? 
 
-.large[The pie chart is pretty but difficult to interpret and not usefull for making comparisons across age.]
+.large[The pie chart is pretty but difficult to interpret and not useful for making comparisons across age.]
 
 ---
 
@@ -742,7 +737,7 @@ tb_au %>% filter(year == 2012) %>%
 ---
 class: center middle
 
-# Takehome! 
+# Take home! 
 
 .large[Place graphical elements you want the viewer to compare close to each other!]
 
@@ -799,6 +794,7 @@ difference in TB incidence from year to year for each country.
 
 ```{r reldata, echo = FALSE}
 tb_rel <- tb %>% 
+  mutate(year = as.integer(year)) %>% 
   group_by(country, year) %>% 
   summarise(count = sum(count, na.rm = TRUE)) %>% 
   mutate(
@@ -847,7 +843,8 @@ map <- map_2012 %>%
   ggplot(aes(x = long, y = lat, group = group, fill = reldiff)) + 
   geom_polygon() +
   coord_map(xlim = c(-180, 180)) +
-  theme_map() 
+  theme_map() +
+  labs(title = "TB relative incidence 2012 - 2011")
 map
 ```
 
@@ -879,7 +876,7 @@ map
 
 ---
 
-# Facetting
+# Faceting
 
 ```{r facetMaps, echo = TRUE, eval =  FALSE}
 library(ggthemes)
@@ -894,14 +891,14 @@ tb_map %>%
 ```
 
 ---
-# Facetting
+# Faceting
 
 ```{r facetMaps-out, ref.label="facetMaps", echo = FALSE, cache = TRUE, fig.height=6, fig.width = 12}
 ```
 
 ---
 
-# Animation or facetting in time
+# Animation or faceting in time
 
 ```{r animateMaps, echo = TRUE, eval = FALSE}
 library(gganimate)
@@ -912,11 +909,12 @@ tb_map %>%
   coord_map(xlim = c(-180, 180)) +
   scale_fill_viridis(limits = c(-1, 4), option = "magma") +
   theme_map() +
+  labs(title = "TB relative incidence from {frame_time}:{frame_time-1}") +
   transition_time(year)
 ```
 
 ---
-# Animation or facetting in time
+# Animation or faceting in time
 
 ```{r animateMaps-out, ref.label="animateMaps", fig.width = 12, fig.height = 6, echo = FALSE, cache = TRUE}
 ```
@@ -936,7 +934,7 @@ ggplotly(map, tooltip = c("fill"))
 layout: false
 class: split-50 with-thick-border border-white
 
-.column[.content[
+.column[.content.vmiddle[.center[
 
 ## Related Packages
 
@@ -944,9 +942,9 @@ class: split-50 with-thick-border border-white
 
 .largeish[https://vegawidget.github.io/vegawidget/]
 
-]]
+]]]
 
-.column[.content[
+.column[.content.vmiddle[.center[
 
 ## Books
 
@@ -954,7 +952,7 @@ class: split-50 with-thick-border border-white
 
 .largeish[https://r4ds.had.co.nz/]
 
-]]
+]]]
 
 
 ---
