@@ -778,7 +778,7 @@ class: middle center bg-main1
 
 .largeish[We can use ggplot2 to create chloropleth maps.
 
-1. Data containing lat/long with geographical regions
+Get data containing lat/long with geographical regions
 ]
 
 ```{r}
@@ -792,7 +792,7 @@ head(world_data)
 
 .largeish[We can use ggplot2 to create chloropleth maps.
 
-2. Compute some summary over a geographical region. Here we compute relative
+Compute some summary over a geographical region. Here we compute relative
 difference in TB incidence from year to year for each country.
 ]
 
@@ -821,8 +821,8 @@ head(tb_rel)
 # Choloropleth map 
 
 .largeish[We can use ggplot2 to create chloropleth maps.
-
-3. Join the geographical regions to the summary data.
+ 
+Join the geographical regions to the summary data.
 ]
 
 ```{r, echo = FALSE, eval = TRUE}
@@ -837,7 +837,7 @@ head(tb_map)
 ---
 # Chloropleth map
 
-Let's look at relative difference from 2012 - 2011
+.largeish[Let's look at relative difference from 2012 - 2011]
 
 ```{r chloromap, echo = TRUE, eval = FALSE}
 library(ggthemes)
@@ -912,8 +912,7 @@ tb_map %>%
   coord_map(xlim = c(-180, 180)) +
   scale_fill_viridis(limits = c(-1, 4), option = "magma") +
   theme_map() +
-  transition_time(year) +
-  labs(title = "Relative difference year: {frame_time}")
+  transition_time(year)
 ```
 
 ---
@@ -930,8 +929,7 @@ tb_map %>%
 
 ```{r plotly, echo = TRUE, fig.height=6, fig.width=12}
 library(plotly)
-map <- map + geom_text(aes(label = region))
-ggplotly(map, tooltip = c("label", "fill"))
+ggplotly(map, tooltip = c("fill"))
 ```
 
 ---
