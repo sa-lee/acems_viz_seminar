@@ -738,26 +738,24 @@ class: center middle
 
 
 ---
-layout: false
-class: split-50 with-thick-border border-white
 
 
-.column[.content.vmiddle[
-## Grammar and Statistics
-.largeish[
+# Grammar and Statistics
+.large[
 What we love about ggplot2...
+]
 
-<img src="https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif" style="width: 40%" />
+.center[<img src="https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif" style="width: 30%" />
 
 [Source: https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif](https://www.wired.com/wp-content/uploads/2016/01/DB-Transformation-Colour.gif)
+]
 
+<br>
+
+--
+.large[
 ...you can make so many different displays of the same data, and each time something new may emerge.
-]]]
-.column[.content.vmiddle[
-.largeish[
- - Grammar of graphics makes rearranging easy
- - Good to look at the data in many different ways [Unwin, Hofmann and Cook](https://journal.r-project.org/archive/2013/RJ-2013-012/RJ-2013-012.pdf)
-]]]
+]
 
 ---
 
