@@ -768,10 +768,12 @@ class: middle center bg-main1
 ---
 # Drawing maps
 
-We can use ggplot2 to create chloropleth maps.
+.largeish[We can use ggplot2 to create chloropleth maps.
+
+1. Data containing lat/long with geographical regions
+]
 
 ```{r}
-# we need some geographical coordinates
 world_data <- map_data("world")
 head(world_data)
 ```
@@ -780,8 +782,12 @@ head(world_data)
 ---
 # Choloropleth map - setting up data
 
-For each country we can compute the relative difference between
-TB cases between year for each country. 
+.largeish[We can use ggplot2 to create chloropleth maps.
+
+2. Compute some summary over a geographical region. Here we compute relative
+difference in TB incidence from year to year for each country.
+]
+
 
 ```{r reldata, echo = FALSE}
 tb_rel <- tb %>% 
@@ -799,6 +805,19 @@ tb_rel <- tb %>%
                    "United Kingdom of Great Britain and Northern Ireland"="UK",
                    "Russian Federation"="Russia")
   )
+
+head(tb_rel)
+```
+
+---
+# Choloropleth map 
+
+.largeish[We can use ggplot2 to create chloropleth maps.
+
+3. Join the geographical regions to the summary data.
+]
+
+```{r, echo = FALSE, eval = TRUE}
 tb_map <- left_join(
   world_data, 
   tb_rel, 
@@ -874,7 +893,7 @@ tb_map %>%
 
 ---
 
-# Animation or faceting in time
+# Animation or facetting in time
 
 ```{r animateMaps, echo = TRUE, eval = FALSE}
 library(gganimate)
@@ -902,29 +921,44 @@ tb_map %>%
 
 ```{r plotly, echo = TRUE, fig.height=6, fig.width=12}
 library(plotly)
-ggplotly(map)
+map <- map + geom_text(aes(label = country))
+ggplotly(map, tooltip = c("label", "fill"))
 ```
 
 ---
+layout: false
+class: split-50 with-thick-border border-white
 
-# and many more!
+.column[.content[
+
+## Related Packages
 
 .largeish[https://www.ggplot2-exts.org/]
+
+.largeish[https://vegawidget.github.io/vegawidget/]
+
+]]
+
+.column[.content[
+
+## Books
 
 .largeish[https://socviz.co/]
 
 .largeish[https://r4ds.had.co.nz/]
 
+]]
+
 
 ---
-class: bg-main1 center
+class: bg-main1 center middle
 
 
 ## Thanks!
 
-.largeish[This talk is based on lecture notes by Dianne Cook.]
+### This talk is based on lecture notes by Dianne Cook.]
 
-.largeish[These slides are made with R markdown using xaringan and the Kunoichi theme.]
+### These slides are made with R markdown using xaringan and the Kunoichi theme.
 
 
 
