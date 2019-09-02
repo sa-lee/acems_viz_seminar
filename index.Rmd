@@ -157,7 +157,10 @@ knitr::include_graphics("./flyingBirds.gif")
 - Interested in the same things as Ursula!
 ]
 
-XXX 
+```{r, out.width='50%', out.height='50%', echo=FALSE}
+knitr::include_graphics("./plyranges.png")
+```
+
 ]]
 
 
@@ -181,6 +184,11 @@ Get the source code from https://github.com/sa-lee/acems_viz_seminar
 <br>
 
 .large[Just open RStudio to go along with the examples!]
+
+```{r, eval = FALSE}
+pkgs <- c("tidyverse", "viridis", "maps", "mapproj", "ggthemes", "plotly")
+install.packages(pkgs)
+```
 
 ---
 
@@ -904,7 +912,8 @@ tb_map %>%
   coord_map(xlim = c(-180, 180)) +
   scale_fill_viridis(limits = c(-1, 4), option = "magma") +
   theme_map() +
-  transition_time(year)
+  transition_time(year) +
+  labs(title = "Relative difference year: {frame_time}")
 ```
 
 ---
@@ -921,7 +930,7 @@ tb_map %>%
 
 ```{r plotly, echo = TRUE, fig.height=6, fig.width=12}
 library(plotly)
-map <- map + geom_text(aes(label = country))
+map <- map + geom_text(aes(label = region))
 ggplotly(map, tooltip = c("label", "fill"))
 ```
 
@@ -956,7 +965,7 @@ class: bg-main1 center middle
 
 ## Thanks!
 
-### This talk is based on lecture notes by Dianne Cook.]
+### This talk is based on lecture notes by Dianne Cook.
 
 ### These slides are made with R markdown using xaringan and the Kunoichi theme.
 
