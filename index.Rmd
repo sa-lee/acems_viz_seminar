@@ -140,7 +140,9 @@ class: split-50 with-thick-border border-white
 - Interested in visualisation of high-dimensional data
 ]
 
-XXX tour animation?
+```{r, out.width='50%', out.height='50%', echo=FALSE}
+knitr::include_graphics("./flyingBirds.gif")
+```
 ]]
 
 .column[.content[
